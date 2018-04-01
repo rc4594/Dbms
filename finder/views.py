@@ -7,6 +7,7 @@ from models import Student,Hostels,Status
 from django.views.generic import View
 from forms import StudentForm
 from django.shortcuts import redirect
+from django.contrib import messages
 # from forms import StudentForm
 
 # Create your views here.
@@ -37,15 +38,18 @@ def index(request) :
 			#								password = {{form.RollNo}},
 			#								email = 'tm@gmail.com'
 			#								)
+			print("Asshole2")
 			message = 'Successfully Registered'
-			#return render(request,'login.html',{'message': message})
-			return redirect("/", {'message' : message})
+			messages.info(request, 'Your password has been changed successfully!')
+			return redirect('/')
+			return render(request,'login.html',{'message': message})
 
 		else :
 			form_error = "(Registration Failed. Username Exists?)"
 			return render(request,'index.html',{'form': form,'form_error': form_error})
 	else :
 		form = StudentForm(request.POST)
+		print("Asshole")	
 	return render(request,'index.html',{'form': form})
 
 def details(request):
@@ -61,7 +65,4 @@ def details(request):
 
 def home(request):
 	alb = Student.objects.all()
-	tm = 'NULL'
-	if request.user.is_authenticated():
-		tm = user.username
-	return render(request , 'home.html' , {'alb' : alb , 'tm' : tm})
+	return render(request , 'home.html' , {'alb' : alb})
